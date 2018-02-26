@@ -54,8 +54,34 @@ public class Converter {
             
             JSONObject jsonObject = new JSONObject();
             
-            // INSERT YOUR CODE HERE
-            
+			//decode string into raw format
+            String[] data = csvString.split("\n");
+			String[][] data2 = new String[data.length][(data[0].split("\",\"")).length];
+			for(int i=0;i<data2.length;i++){
+				int end = data2[0].length-1;
+				data2[i] = data[i].split("\",\"");
+				data2[i][0] = data2[i][0].substring(1,data2[i][0].length);
+				data2[i][end] = data2[i][end].substring(0,data2[0][end].length-1);
+			}
+			
+			//re-encode string into JSON
+			results = "{\"colHeaders\":[";
+			for(int i=0;i<data2.length;i++){
+				results = results+"\""+data2[0][i]+"\",";
+			}
+			results = results.substring(0,results.length-1)+"],\n\"rowHeaders\":[";
+			for(int i=1;i<data2[0].length;i++){
+				results = results+"\""+data2[i][0]+"\",";
+			}
+			results = results.substring(0,results.length-1)+"],\n\"data\":[";
+			for(int i=1;i<data2.length;i++){
+				results = results+"[";
+				for(int j=1;j<data2[0].length;j++){
+					results = results+data2[i][j]+",";
+				}
+				results = results.substring(0,results.length-1)+"],";
+			}
+			results = results.substring(0,results.length-1)+"]}";
         }
         
         catch(IOException e) { return e.toString(); }
@@ -76,7 +102,19 @@ public class Converter {
             StringWriter writer = new StringWriter();
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
-            // INSERT YOUR CODE HERE
+            //decode string into raw format
+			String[] data = jsonString.split(",");
+			String[] rows = data[1].split("\",\"");
+			String[] cols = data[0].split("\",\"");
+			String[][] data2 = new String[rows.length][cols.length];
+			for(int i=0;i<cols.length;i++){
+				data2[0][i] = rows[i];
+			}
+			String[] temp = data2[0][0].split("\"");
+			data2[0][0] = temp[temp.length-2];
+			data2[0][data2[0].length-1] = data2[0][data2[0].length-1].substring(0,data2[0][data2[0].length-1].length-1);
+			
+			
             
         }
         
