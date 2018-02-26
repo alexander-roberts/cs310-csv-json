@@ -106,6 +106,7 @@ public class Converter {
 			String[] data = jsonString.split(",");
 			String[] rows = data[1].split("\",\"");
 			String[] cols = data[0].split("\",\"");
+			String[] array = data[2].split("],[");
 			String[][] data2 = new String[rows.length][cols.length];
 			for(int i=0;i<cols.length;i++){
 				data2[0][i] = rows[i];
@@ -113,6 +114,14 @@ public class Converter {
 			String[] temp = data2[0][0].split("\"");
 			data2[0][0] = temp[temp.length-2];
 			data2[0][data2[0].length-1] = data2[0][data2[0].length-1].substring(0,data2[0][data2[0].length-1].length-1);
+			for(int i=1;i<rows.length;i++) {
+				data2[i][0] = cols[i];
+			}
+			array[0] = array
+			for(int i=1;i<rows.length;i++) {
+				data2[i] = array[i-1].split(",");
+				data2[i][0] = 
+			}
 			
 			
             
